@@ -38,6 +38,7 @@ exports.registerUsers = async (req, res) => {
 };
 
 
+
 // Log in an existing user
 exports.loginUser = async (req, res) => {
   try {
@@ -159,6 +160,39 @@ exports.updateUser = async (req, res) => {
 
 
  
+// delete functionality
+exports.deleteUser = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+
+    // Construct the SQL query to delete the user
+    const deleteQuery = `
+      DELETE FROM users
+      WHERE user_id = ?
+    `;
+
+    // Execute the delete query
+    const [result] = await db.execute(deleteQuery, [user_id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Error deleting user",
+    });
+  }
+};
 
 
 
