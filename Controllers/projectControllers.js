@@ -1,13 +1,12 @@
 const projectModel = require("../Models/projectModel");
 const db = require("../connection");
 
-// Add a new project
 exports.addProject = async (req, res) => {
   try {
     const project = req.body;
 
-    const insertQuery = "INSERT INTO projects (id,name,user_id) VALUES (?,?,?)";
-    const insertValues = [project.id,project.name,project.user_id];
+    const insertQuery = "INSERT INTO projects (project_id,project_name,user_id) VALUES (?,?,?)";
+    const insertValues = [project.project_id,project.project_name,project.user_id];
 
     await db.execute(insertQuery, insertValues);
 
@@ -24,7 +23,6 @@ exports.addProject = async (req, res) => {
   }
 };
 
-// Route to get a list of all projects
 exports.getProjects = async (req, res) => {
   try {
     const selectQuery = "SELECT * FROM projects";
@@ -49,7 +47,7 @@ exports.updateProject = async (req, res) => {
     const { newName } = req.body;
 
   
-    const updateQuery = "UPDATE projects SET name = ? WHERE id = ?";
+    const updateQuery = "UPDATE projects SET project_name = ? WHERE project_id = ?";
     
     
     await db.execute(updateQuery, [newName, projectId]);
